@@ -1,0 +1,167 @@
+heat_template_version: 2016-10-14
+
+description: This template will create an external network, create a internal and a user with a role, create internal network, and router.
+
+parameters:
+  project_name:
+    type: string
+    description: Project name that will be created it.
+    default: 'tenant1'
+  user_role:
+    type: string
+    description: User role to be assigned.
+    default: 'ResellerAdmin'
+  project_user:
+    type: string
+    description: User to be created inside the project.
+    default: 'user1'
+  project_user_passwd:
+    type: string
+    description: Password for the project defined user
+    default: 'redhat'
+  public_net_name:
+    type: string
+    description: Name of the internal network.
+    default: 'public_net'
+  public_subnet_name:
+    type: string
+    description: Name of the internal subnet.
+    default: 'public_subnet'
+  public_net_cidr:
+    type: string
+    description: CIDR for the provider(external) network
+    default: 192.168.122.0/24
+  public_net_pool_start:
+    type: string 
+    description: start of the IP pool for the external network
+    default: 192.168.122.151
+  public_net_pool_end:
+    type: string
+    description: end of the IP pool for the external network
+    default: 192.168.122.200
+  public_net_gateway:
+    type: string
+    description: Gateway for the public network
+    default: 192.168.122.1
+  internal_net_name:
+    type: string
+    description: Name of the internal network.
+    default: 'internal_net'
+  internal_subnet_name:
+    type: string
+    description: Name of the internal subnet.
+    default: 'internal_subnet'
+  internal_router_name:
+    type: string
+    description: Name of the internal router.
+    default: 'internal_router'
+  internal_net_cidr:
+    type: string
+    description: CIDR for the internal network
+    default: 192.168.123.0/24
+  internal_net_pool_start:
+    type: string 
+    description: start of the IP pool for the external network
+    default: 192.168.123.1
+  internal_net_pool_end:
+    type: string
+    description: end of the IP pool for the external network
+    default: 192.168.123.253
+  internal_net_gateway:
+    type: string
+    description: Gateway for the public network
+    default: 192.168.123.254
+
+resources:
+
+  instance_flavor1:
+    type: OS::Nova::Flavor
+    properties:
+      ephemeral: 40
+      is_public: true
+      name: m1.medium
+      ram: 4096
+      vcpus: 2
+      extra_specs: {}
+
+  instance_flavor2:
+    type: OS::Nova::Flavor
+    properties:
+      ephemeral: 20
+      is_public: true
+      name: m1.small
+      ram: 2048
+      vcpus: 1
+      extra_specs: {}
+
+  openstack_project:
+    type: OS::Keystone::Project
+    properties:
+      name: { get_param: project_name }
+      domain: default
+      description: New project
+
+  openstack_user:
+    type: OS::Keystone::User
+    properties:
+      name: { get_param: project_user }
+      domain: default
+      description: User
+      default_project: { get_resource: openstack_project }
+      password: { get_param: project_user_passwd }
+      roles:
+        - role: { get_param: user_role}
+          project: { get_resource: openstack_project }
+
+  public_network:
+    type: OS::Neutron::ProviderNet
+    properties:
+      name: { get_param: public_net_name }
+      network_type: flat
+      physical_network: datacentre
+      router_external: True
+
+  public_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      name: { get_param: public_subnet_name }
+      network_id: { get_resource: public_network }
+      cidr: { get_param: public_net_cidr }
+      dns_nameservers: [ '10.12.50.1','192.168.122.1' ]
+      enable_dhcp: False
+      gateway_ip: { get_param: public_net_gateway }
+      allocation_pools:
+        - start: { get_param: public_net_pool_start }
+          end: { get_param: public_net_pool_end }
+
+  internal_net:
+    type: OS::Neutron::Net
+    properties:
+      name: { get_param: internal_net_name }
+      tenant_id: { get_resource: openstack_project }
+
+  internal_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      name: { get_param: internal_subnet_name }
+      network_id: { get_resource: internal_net }
+      cidr: { get_param: internal_net_cidr }
+      dns_nameservers: [ '10.12.50.1','192.168.122.1' ]
+      gateway_ip: { get_param: internal_net_gateway }
+      tenant_id: { get_resource: openstack_project }
+      allocation_pools:
+        - start: { get_param: internal_net_pool_start }
+          end: { get_param: internal_net_pool_end }
+
+  internal_router:
+    type: OS::Neutron::Router
+    properties:
+      name: { get_param: internal_router_name }
+      external_gateway_info:
+        network: { get_resource: public_network }
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: internal_router }
+      subnet_id: { get_resource: internal_subnet }

@@ -1,0 +1,7 @@
+parameter_defaults:
+  # assign role capabilities Nova scheduler can match
+  ComputeSchedulerHints:
+    'capabilities:profile': 'compute'
+  NovaComputeExtraConfig:
+    nova::cpu_allocation_ratio: '16'
+    nova::ram_allocation_ratio: '1.5'

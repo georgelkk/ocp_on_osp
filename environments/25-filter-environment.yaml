@@ -1,0 +1,5 @@
+parameter_defaults:
+
+    NovaSchedulerDefaultFilters: ['AvailabilityZoneFilter','CoreFilter','RamFilter','ComputeFilter','ComputeCapabilitiesFilter','ImagePropertiesFilter', 'AggregateInstanceExtraSpecsFilter']
+    
+    #NovaSchedulerDefaultFilters: ['AvailabilityZoneFilter', 'AggregateMultiTenancyIsolation', 'AggregateCoreFilter', 'AggregateRamFilter','ComputeFilter','ComputeCapabilitiesFilter','ImagePropertiesFilter', 'AggregateInstanceExtraSpecsFilter']

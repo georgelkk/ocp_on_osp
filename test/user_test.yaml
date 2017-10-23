@@ -1,0 +1,96 @@
+heat_template_version: 2016-10-14
+
+description: This template will create two servers and assign one an IP address.
+
+parameters:
+  tenant_key_name:
+    type: string
+    description: ssh key required for server creation
+    default: 'stack'
+    constraints:
+      - custom_constraint: nova.keypair
+  server1_name:
+    type: string
+    description: name of the instance
+    default: 'vm1'
+  server2_name:
+    type: string
+    description: name of the instance
+    default: 'vm2'
+  internal_net_name:
+    type: string
+    description: name of the internal network
+    default: 'internal_net'
+  internal_subnet_name:
+    type: string
+    description: name of the internal subnet
+    default: 'internal_subnet'
+  public_net_cidr:
+    type: string
+    description: CIDR for the public(external) network
+    default: 192.168.122.0/24
+  public_network:
+    type: string
+    description: Name of the public network.
+    default: 'public_net'
+
+resources:
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: internal_sg
+      description: Ping and SSH
+      rules:
+      - protocol: icmp
+      - protocol: tcp
+        port_range_min: 22
+        port_range_max: 22
+
+  server1:
+    type: OS::Nova::Server
+    properties:
+      name: { get_param: server1_name }
+      image: cirros-0.3.4-x86_64
+      flavor: m1.small
+      key_name:  { get_param: tenant_key_name }
+      networks:
+        - port: { get_resource: server1_port }
+
+  server1_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_param: internal_net_name }
+      fixed_ips:
+        - subnet: { get_param: internal_subnet_name }
+      security_groups: [get_resource: security_group]
+
+  server1_floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: { get_param: public_network }
+      port_id: { get_resource: server1_port }
+
+  server2:
+    type: OS::Nova::Server
+    properties:
+      name: { get_param: server2_name }
+      image: cirros-0.3.4-x86_64
+      flavor: m1.small
+      key_name:  { get_param: tenant_key_name }
+      networks:
+        - port: { get_resource: server2_port }
+
+  server2_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_param: internal_net_name }
+      fixed_ips:
+        - subnet: { get_param: internal_subnet_name }
+      security_groups: [get_resource: security_group]
+
+  server2_floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: { get_param: public_network }
+      port_id: { get_resource: server2_port }
