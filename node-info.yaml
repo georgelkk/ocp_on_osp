@@ -7,5 +7,5 @@ parameter_defaults:
   
   # Number of nodes to deploy:
   ControllerCount: 3
-  ComputeCount: 2
+  ComputeCount: 4
   CephStorageCount: 3
