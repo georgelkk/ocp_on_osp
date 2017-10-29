@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 source ~/ocpuserrc
-domain=internal.ocp.example.com
+domain=internal.ocp3.example.com
 netid1=$(openstack network show private_network -f value -c id)
 for node in app-node-{0..2};
 do

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-domain=ocp3.example.com
+domain=internal.ocp3.example.com
 netid1=$(openstack network show private_network -f value -c id)
 
 openstack server create \
@@ -8,5 +8,5 @@ openstack server create \
   --flavor m1.small \
   --image rhel-server-7.4 \
   --key-name ocpkey \
-  --security-group bastionsg \
-  bastion.$domain
+  --security-group haproxysg \
+  haproxy.$domain
