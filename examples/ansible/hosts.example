@@ -25,7 +25,7 @@ openshift_master_cluster_method=native
 openshift_node_local_quota_per_fsgroup=512Mi
 openshift_cloudprovider_kind=openstack
 
-openshift_cloudprovider_openstack_auth_url=http://192.168.122.109:5000/v2.0
+openshift_cloudprovider_openstack_auth_url=http://192.168.122.106:5000/v2.0
 openshift_cloudprovider_openstack_username=ocp_user
 openshift_cloudprovider_openstack_password=password
 openshift_cloudprovider_openstack_tenant_name=ocp_tenant
@@ -44,7 +44,7 @@ openshift_hosted_registry_storage_kind=openstack
 openshift_hosted_registry_storage_access_modes=['ReadWriteOnce']
 openshift_hosted_registry_storage_openstack_filesystem=ext4
 
-openshift_hosted_registry_storage_openstack_volumeID=039a6039-344d-4d9d-ad2b-f206a8aef5fb
+openshift_hosted_registry_storage_openstack_volumeID=3f66bcec-30e7-4287-bf69-664eb978f72e
 openshift_hosted_registry_storage_volume_size=30Gi
 
 # host group for masters
