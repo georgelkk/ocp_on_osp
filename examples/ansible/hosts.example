@@ -1,0 +1,72 @@
+[OSEv3:children]
+masters
+etcd
+nodes
+
+# Set variables common for all OSEv3 hosts
+[OSEv3:vars]
+ansible_ssh_user=cloud-user
+deployment_type=openshift-enterprise
+debug_level=2
+ansible_become=true
+console_port=8443
+openshift_debug_level="{{ debug_level }}"
+openshift_node_debug_level="{{ node_debug_level | default(debug_level, true) }}"
+openshift_master_debug_level="{{ master_debug_level | default(debug_level, true) }}"
+
+openshift_master_identity_providers= [{'name': 'idm', 'challenge': 'true','login': 'true', 'kind': 'LDAPPasswordIdentityProvider', 'attributes': {'id': ['dn'], 'email': ['mail'], 'name': ['cn'], 'preferredUsername': ['uid']},  'bindDN': 'uid=test-user,cn=users,cn=accounts,dc=ocp3,dc=example,dc=com', 'bindPassword': 'test', 'ca': '/etc/origin/master/ca.crt', 'insecure': 'true', 'url': 'ldap://ipa.ocp3.example.com/cn=users,cn=accounts,dc=ocp3,dc=example,dc=com?uid?sub?(memberOf=cn=grp-openstack,cn=groups,cn=compat,dc=ocp3,dc=example,dc=com)'}]
+
+openshift_master_access_token_max_seconds=2419201
+openshift_registry_selector="role=infra"
+openshift_router_selector="role=infra"
+openshift_hosted_router_replicas=3
+openshift_hosted_registry_replicas=1
+openshift_master_cluster_method=native
+openshift_node_local_quota_per_fsgroup=512Mi
+openshift_cloudprovider_kind=openstack
+
+openshift_cloudprovider_openstack_auth_url=http://192.168.122.109:5000/v2.0
+openshift_cloudprovider_openstack_username=ocp_user
+openshift_cloudprovider_openstack_password=password
+openshift_cloudprovider_openstack_tenant_name=ocp_tenant
+openshift_master_cluster_hostname=openshift.ocp3.example.com
+openshift_master_cluster_public_hostname=openshift.ocp3.example.com
+openshift_master_default_subdomain=apps.ocp3.example.com
+
+osm_default_node_selector="role=app"
+os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+sm_use_cockpit=true
+
+containerized=false
+
+# registry
+openshift_hosted_registry_storage_kind=openstack
+openshift_hosted_registry_storage_access_modes=['ReadWriteOnce']
+openshift_hosted_registry_storage_openstack_filesystem=ext4
+
+openshift_hosted_registry_storage_openstack_volumeID=039a6039-344d-4d9d-ad2b-f206a8aef5fb
+openshift_hosted_registry_storage_volume_size=30Gi
+
+# host group for masters
+[masters]
+master-0.internal.ocp3.example.com
+master-1.internal.ocp3.example.com
+master-2.internal.ocp3.example.com
+
+# host group for etcd
+[etcd]
+master-0.internal.ocp3.example.com
+master-1.internal.ocp3.example.com
+master-2.internal.ocp3.example.com
+
+# host group for nodes, includes region info
+[nodes]
+master-0.internal.ocp3.example.com openshift_node_labels="{'role': 'master'}" openshift_hostname=master-0.internal.ocp3.example.com openshift_schedulable=false
+master-1.internal.ocp3.example.com openshift_node_labels="{'role': 'master'}" openshift_hostname=master-1.internal.ocp3.example.com openshift_schedulable=false
+master-2.internal.ocp3.example.com openshift_node_labels="{'role': 'master'}" openshift_hostname=master-2.internal.ocp3.example.com openshift_schedulable=false 
+app-node-0.internal.ocp3.example.com openshift_node_labels="{'role': 'app'}" openshift_hostname=app-node-0.internal.ocp3.example.com 
+app-node-1.internal.ocp3.example.com openshift_node_labels="{'role': 'app'}" openshift_hostname=app-node-1.internal.ocp3.example.com
+app-node-2.internal.ocp3.example.com openshift_node_labels="{'role': 'app'}" openshift_hostname=app-node-2.internal.ocp3.example.com
+infra-node-0.internal.ocp3.example.com openshift_node_labels="{'role': 'infra'}" openshift_hostname=infra-node-0.internal.ocp3.example.com
+infra-node-1.internal.ocp3.example.com openshift_node_labels="{'role': 'infra'}" openshift_hostname=infra-node-1.internal.ocp3.example.com
+infra-node-2.internal.ocp3.example.com openshift_node_labels="{'role': 'infra'}" openshift_hostname=infra-node-2.internal.ocp3.example.com
