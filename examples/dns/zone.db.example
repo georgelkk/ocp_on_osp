@@ -1,0 +1,28 @@
+$ORIGIN ocp3.example.com.
+$TTL 300
+@	IN SOA	ns-master.ocp3.example.com.	admin@ocp3.example.com (
+	0	; serial number
+	8h	; refresh
+	1h	; retry
+	7d	; expire
+	1d	) ; min TTL
+
+	IN	NS	ns-master.ocp3.example.com.
+
+ns-master	IN		A	192.168.122.159
+$ORIGIN apps.ocp3.example.com.
+*                       	A       192.168.122.161
+$ORIGIN internal.ocp3.example.com.
+app-node-0			A	192.168.123.7
+app-node-1			A	192.168.123.19
+app-node-2			A	192.168.123.20
+bastion				A	192.168.123.15
+infra-node-0			A	192.168.123.13
+infra-node-1			A	192.168.123.6
+infra-node-2			A	192.168.123.14
+master-0			A	192.168.123.10
+master-1			A	192.168.123.11
+master-2			A	192.168.123.12
+$ORIGIN ocp3.example.com.
+bastion                 	A	192.168.123.155
+ns-master               	A	192.168.122.159
