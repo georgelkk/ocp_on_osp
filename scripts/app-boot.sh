@@ -12,7 +12,7 @@ do
   --key-name ocpkey \
   --security-groups nodesg \
   --user-data=/home/stack/templates/user-data/$node.yaml \
-  --block-device source=blank,dest=volume,device=vdb,size=3,shutdown=preserve \
-  --block-device source=blank,dest=volume,device=vdc,size=5,shutdown=preserve \
+  --block-device source=blank,dest=volume,device=vdb,size=15,shutdown=preserve \
+  --block-device source=blank,dest=volume,device=vdc,size=25,shutdown=preserve \
   $node.$domain;
 done
