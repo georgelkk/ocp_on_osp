@@ -8,16 +8,16 @@ fqdn: master-0.internal.ocp3.example.com
 
 write_files:
   - path: "/etc/sysconfig/docker-storage-setup"
-      permissions: "0644"
-      owner: "root"
-      content: |
-        DEVS='/dev/vdb'
-        VG=docker_vol
-        DATA_SIZE=95%VG
-        STORAGE_DRIVER=overlay2
-        CONTAINER_ROOT_LV_NAME=dockerlv
-        CONTAINER_ROOT_LV_MOUNT_PATH=/var/lib/docker
-        CONTAINER_ROOT_LV_SIZE=100%FREE
+    permissions: "0644"
+    owner: "root"
+    content: |
+      DEVS='/dev/vdb'
+      VG=docker_vol
+      DATA_SIZE=95%VG
+      STORAGE_DRIVER=overlay2
+      CONTAINER_ROOT_LV_NAME=dockerlv
+      CONTAINER_ROOT_LV_MOUNT_PATH=/var/lib/docker
+      CONTAINER_ROOT_LV_SIZE=100%FREE
 
 fs_setup:
 - label: emptydir
