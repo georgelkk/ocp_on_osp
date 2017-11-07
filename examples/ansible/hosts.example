@@ -14,7 +14,9 @@ openshift_debug_level="{{ debug_level }}"
 openshift_node_debug_level="{{ node_debug_level | default(debug_level, true) }}"
 openshift_master_debug_level="{{ master_debug_level | default(debug_level, true) }}"
 
-openshift_master_identity_providers= [{'name': 'idm', 'challenge': 'true','login': 'true', 'kind': 'LDAPPasswordIdentityProvider', 'attributes': {'id': ['dn'], 'email': ['mail'], 'name': ['cn'], 'preferredUsername': ['uid']},  'bindDN': 'uid=test-user,cn=users,cn=accounts,dc=ocp3,dc=example,dc=com', 'bindPassword': 'test', 'ca': '/etc/origin/master/ca.crt', 'insecure': 'true', 'url': 'ldap://ipa.ocp3.example.com/cn=users,cn=accounts,dc=ocp3,dc=example,dc=com?uid?sub?(memberOf=cn=grp-openstack,cn=groups,cn=compat,dc=ocp3,dc=example,dc=com)'}]
+#openshift_master_ldap_ca_file=/etc/ansible/example-ca.crt
+#openshift_master_identity_providers= [{'name': 'idm', 'challenge': 'true','login': 'true', 'kind': 'LDAPPasswordIdentityProvider', 'attributes': {'id': ['dn'], 'email': ['mail'], 'name': ['cn'], 'preferredUsername': ['uid']},  'bindDN': 'uid=test-user,cn=users,cn=accounts,dc=ocp3,dc=example,dc=com', 'bindPassword': 'test', 'ca': '/etc/origin/master/example-ca.crt', 'insecure': 'false', 'url': 'ldap://ipa.ocp3.example.com/cn=users,cn=accounts,dc=ocp3,dc=example,dc=com?uid?sub?(memberOf=cn=grp-openstack,cn=groups,cn=compat,dc=ocp3,dc=example,dc=com)'}]
+openshift_master_identity_providers= [{'name': 'idm', 'challenge': 'true','login': 'true', 'kind': 'LDAPPasswordIdentityProvider', 'attributes': {'id': ['dn'], 'email': ['mail'], 'name': ['cn'], 'preferredUsername': ['uid']},  'bindDN': 'uid=test-user,cn=users,cn=accounts,dc=ocp3,dc=example,dc=com', 'bindPassword': 'test', 'ca': '', 'insecure': 'true', 'url': 'ldap://ipa.ocp3.example.com/cn=users,cn=accounts,dc=ocp3,dc=example,dc=com?uid?sub?(memberOf=cn=grp-openstack,cn=groups,cn=compat,dc=ocp3,dc=example,dc=com)'}]
 
 openshift_master_access_token_max_seconds=2419201
 openshift_registry_selector="role=infra"
@@ -25,7 +27,7 @@ openshift_master_cluster_method=native
 openshift_node_local_quota_per_fsgroup=512Mi
 openshift_cloudprovider_kind=openstack
 
-openshift_cloudprovider_openstack_auth_url=http://192.168.122.106:5000/v2.0
+openshift_cloudprovider_openstack_auth_url=http://192.168.122.102:5000/v2.0
 openshift_cloudprovider_openstack_username=ocp_user
 openshift_cloudprovider_openstack_password=password
 openshift_cloudprovider_openstack_tenant_name=ocp_tenant
@@ -44,7 +46,7 @@ openshift_hosted_registry_storage_kind=openstack
 openshift_hosted_registry_storage_access_modes=['ReadWriteOnce']
 openshift_hosted_registry_storage_openstack_filesystem=ext4
 
-openshift_hosted_registry_storage_openstack_volumeID=3f66bcec-30e7-4287-bf69-664eb978f72e
+openshift_hosted_registry_storage_openstack_volumeID=93f80fa3-23a1-4bc1-96e7-fed81e72490e
 openshift_hosted_registry_storage_volume_size=30Gi
 
 # host group for masters
