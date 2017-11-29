@@ -4,8 +4,10 @@ parameter_defaults:
   OvercloudControlFlavor: control
   OvercloudComputeFlavor: compute
   OvercloudCephStorageFlavor: ceph-storage
+  OvercloudObjectStorageFlavor: swift-storage
   
   # Number of nodes to deploy:
   ControllerCount: 3
-  ComputeCount: 4
+  ComputeCount: 3
   CephStorageCount: 3
+  ObjectStorageCount: 3
