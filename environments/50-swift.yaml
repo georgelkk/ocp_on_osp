@@ -1,0 +1,5 @@
+parameter_defaults:
+  SwiftRawDisks: {"vdb": {}}
+  SwiftMountCheck: true
+  SwiftUseLocalDir: false
+  SwiftProxyNodeTimeout: 45

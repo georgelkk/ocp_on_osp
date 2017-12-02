@@ -35,7 +35,7 @@ parameters:
     type: string
   BondInterfaceOvsOptions:
     default: ''
-    description: The ovs_options string for the bond interface. Set things like
+    description: The bonding_options string for the bond interface. Set things like
                  lacp=active and/or bond_mode=balance-slb using this option.
     type: string
     constraints:
