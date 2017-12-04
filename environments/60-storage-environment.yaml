@@ -10,8 +10,8 @@ parameter_defaults:
   CinderEnableRbdBackend: true
   CinderBackupBackend: ceph
   NovaEnableRbdBackend: true
-  GlanceBackend: ceph
-  GnocchiBackend: ceph
+  GlanceBackend: rbd
+  GnocchiBackend: rbd
 
   ExtraConfig:
     ceph::profile::params::osds:
