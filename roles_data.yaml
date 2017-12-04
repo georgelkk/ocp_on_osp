@@ -27,6 +27,7 @@
     - OS::TripleO::Services::NeutronOvsAgent
     - OS::TripleO::Services::RabbitMQ
     - OS::TripleO::Services::HAproxy
+    - OS::TripleO::Services::Horizon
     - OS::TripleO::Services::Keepalived
     - OS::TripleO::Services::Memcached
     - OS::TripleO::Services::Pacemaker
