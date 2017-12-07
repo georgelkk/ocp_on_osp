@@ -1,0 +1,20 @@
+---
+- hosts: controller
+  tasks:
+  - lineinfile:
+      path: /etc/neutron/dhcp_agent.ini
+      insertbefore: '#dhcp_domain = openstacklocal'
+      line: 'dhcp_domain = internal.ocp3.example.com'
+
+  - lineinfile:
+      path: /etc/neutron/neutron.conf
+      insertbefore: '#dns_domain = openstacklocal'
+      line: 'dns_domain = internal.ocp3.example.com'
+
+  - service:
+      name: neutron-server
+      state: restarted
+
+  - service:
+      name: neutron-dhcp-agent
+      state: restarted
